@@ -12,7 +12,8 @@ describe('CreateUser', () => {
         const user = await createUserService.execute({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         expect(user).toHaveProperty('id');
@@ -27,14 +28,16 @@ describe('CreateUser', () => {
         await createUserService.execute({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         await expect(
             createUserService.execute({
                 name: 'Cesar Emmanuel',
                 email: 'cesar@gmail.com',
-                password: '1234'
+                address: 'Rua Luis Juarez 26 fundos',
+                fone: '(11) 99999-9999'
             }),
         ).rejects.toBeInstanceOf(AppError);
     });

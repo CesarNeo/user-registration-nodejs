@@ -2,11 +2,20 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
+import ShowProfileService from '@modules/users/services/ShowProfileService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 export default class UsersController {
+    public async show(request: Request, response: Response): Promise<Response> {
+        const userId = request.params.id;
+        const showProfile = container.resolve(ShowProfileService);
+        const user = await showProfile.execute({ userId });
+
+        return response.json(user);
+    }
+
     public async index(request: Request, response: Response): Promise<Response> {
         const usersRepository = new UsersRepository();
 
@@ -16,45 +25,41 @@ export default class UsersController {
     }
 
     public async create(request: Request, response: Response): Promise<Response> {
-        const { name, email, password } = request.body;
+        const {
+            name,
+            email,
+            address,
+            fone
+        } = request.body;
 
         const createUserService = container.resolve(CreateUserService);
 
-        const user = await createUserService.execute({ name, email, password });
+        const user = await createUserService.execute({
+            name,
+            email,
+            address,
+            fone
+        });
 
-        const userWithoutPassword = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-        };
-
-        return response.json(userWithoutPassword);
+        return response.json(user);
     }
 
     public async update(request: Request, response: Response): Promise<Response> {
         const userId = request.params.id;
 
-        const { name, email } = request.body;
+        const { name, email, address, fone } = request.body;
 
         const updateUserService = container.resolve(UpdateUserService);
 
         const user = await updateUserService.execute({
             userId,
             name,
-            email
+            email,
+            address,
+            fone
         });
 
-        const userWithoutPassword = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-        };
-
-        return response.json(userWithoutPassword);
+        return response.json(user);
     }
 
     public async delete(request: Request, response: Response): Promise<Response> {

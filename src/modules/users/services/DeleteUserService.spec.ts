@@ -16,7 +16,8 @@ describe('DeleteUser', () => {
         const user = await fakeUsersRepository.create({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         const deleteSpy = jest.spyOn(fakeUsersRepository, 'delete');

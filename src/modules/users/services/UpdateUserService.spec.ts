@@ -17,31 +17,39 @@ describe('UpdateUser', () => {
         const user = await fakeUsersRepository.create({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         const updatedUser = await updateUserService.execute({
             userId: user.id,
             name: 'Rodrigo',
-            email: 'rodrigo@gmail.com'
+            email: 'rodrigo@gmail.com',
+            address: 'Rua Teste',
+            fone: '(11) 98888-9999'
         });
 
         expect(updatedUser.name).toBe('Rodrigo');
         expect(updatedUser.email).toBe('rodrigo@gmail.com');
+        expect(updatedUser.address).toBe('Rua Teste');
+        expect(updatedUser.fone).toBe('(11) 98888-9999');
     });
 
     it('should not be able to update the user from non-existing user', async () => {
         const user = await fakeUsersRepository.create({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         await expect(
             updateUserService.execute({
                 userId: 'non-existing-user-id',
                 name: 'Cesar Emmanuel',
-                email: 'cesar1@gmail.com'
+                email: 'cesar1@gmail.com',
+                address: 'Rua Luis Juarez 26 fundos',
+                fone: '(11) 99999-9999'
             })
         ).rejects.toBeInstanceOf(AppError);
     });
@@ -50,20 +58,24 @@ describe('UpdateUser', () => {
         await fakeUsersRepository.create({
             name: 'Cesar Emmanuel',
             email: 'cesar@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         const user = await fakeUsersRepository.create({
             name: 'Rodrigo',
             email: 'rodrigo@gmail.com',
-            password: '1234'
+            address: 'Rua Luis Juarez 26 fundos',
+            fone: '(11) 99999-9999'
         });
 
         await expect(
             updateUserService.execute({
                 userId: user.id,
                 name: 'Rodrigo',
-                email: 'cesar@gmail.com'
+                email: 'cesar@gmail.com',
+                address: 'Rua Luis Juarez 26 fundos',
+                fone: '(11) 99999-9999'
             })
         ).rejects.toBeInstanceOf(AppError);
     });

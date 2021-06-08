@@ -8,6 +8,8 @@ interface Request {
     userId: string;
     name: string;
     email: string;
+    address: string;
+    fone: string;
 }
 
 @injectable()
@@ -20,7 +22,9 @@ export default class UpdateUserService {
     public async execute({
         userId,
         name,
-        email
+        email,
+        address,
+        fone
     }: Request): Promise<User> {
         const user = await this.usersRepository.findById(userId);
 
@@ -36,6 +40,8 @@ export default class UpdateUserService {
 
         user.name = name;
         user.email = email;
+        user.address = address;
+        user.fone = fone;
 
         return this.usersRepository.save(user);
     }
